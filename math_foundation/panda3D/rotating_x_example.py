@@ -9,12 +9,14 @@ class rotating_point(space):
 	def __init__(self):
 		space.__init__(self)
 		self.v = self.create_vector((1,1,1))
+		self.x = self.create_vector((1,2,1))
 		self.taskMgr.add(self.rotate_x, "Rotate")
+		self.task_mgr.add(self.rotate_y, "Rotate")
 
 	def rotate_x(self, task):
 		v = self.v
 		θ = π/60
-		R = np.array([	[1, 0, 0],
+		R = np.array([[1, 0, 0],
 				[0, cos(θ), -sin(θ)],
 				[0, sin(θ), cos(θ)]])
 		new_loc = R @ v.pos
@@ -23,6 +25,19 @@ class rotating_point(space):
 		task.delayTime = 1/30.0
 		return Task.again 	# Runs every 1/40 seconds
 		#return Task.cont 	# Run every frame
+
+	def rotate_y(self, task):
+		#rotate the vector by π and stretch it by 3
+		x = self.x
+		θ = π/120
+		R = np.array([[cos(θ), 0, sin(θ)],
+				[0, 1, 0],
+				[-sin(θ), 0, cos(θ)]])
+		new_loc = R @ x.pos
+		x.redraw(new_loc)
+		task.delayTime = 1/30.0
+		return Task.again 	# Runs every 1/40 seconds
+
 
 app = rotating_point()
 app.run()

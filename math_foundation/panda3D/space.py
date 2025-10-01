@@ -35,7 +35,7 @@ class point_cloud():
 							[0.3, 0, 0.5]])
 			self.X = np.random.multivariate_normal(μ, Σ, n)
 
-		self.X = X
+		#self.X = X
 		self.n = self.X.shape[0]
 		self.draw_points(self.X)
 

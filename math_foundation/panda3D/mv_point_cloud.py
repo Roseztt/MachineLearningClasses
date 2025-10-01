@@ -4,12 +4,16 @@ from space import *
 class cloud_of_points(space):
 	def __init__(self):
 		space.__init__(self)
-		self.cloud = point_cloud(mean=[2,1,1])
+		self.state = 'shrink'
+		self.total_time_elapsed = 0
+		self.cloud = point_cloud(mean=[2,1,1], n = 70)
 		self.accept("m", self.move_cloud)
 
 	def move_cloud(self):
 		X = self.cloud.pos()
-		X = X - 0.2
+		n = X.shape[0]
+		C = np.eye(n) - (1/n) * np.ones((n,n))
+		X = C @ X
 		self.cloud.redraw(X)
 		
 
